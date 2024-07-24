@@ -72,8 +72,8 @@ erDiagram
     }
 
     MOVIE_GENRE {
-        int movie_id FK
-        int genre_id FK
+        int movie_id FK, PK
+        int genre_id FK, PK
         datetime created_at
         datetime updated_at
     }
@@ -84,28 +84,38 @@ erDiagram
         text description
         %% ENUM('leading', 'supporting', 'background')
         enum role
-        int movie_id FK
         datetime created_at
         datetime updated_at
     }
 
-    MOVIE_PERSON {
-        int movie_person_id PK
+    MOVIE_PERSON_CHARACTER {
+        int id PK
         int movie_id FK
         int person_id FK
         int character_id FK
-        string role_description
+        datetime created_at
+        datetime updated_at
     }
 
-    USER ||--o| FILE: "has"
-    MOVIE ||--o| FILE: "has" 
-    COUNTRY ||--o{ MOVIE : "is origin of"
+    FAVORITE_MOVIE {
+        int user_id FK, PK
+        int movie_id FK, PK
+        datetime created_at
+        datetime updated_at
+    }
+
+    USER ||--o| FILE: "has avatar"
+    USER ||--o{ FAVORITE_MOVIE : "has"
+    MOVIE ||--o| FILE: "has poster" 
     MOVIE ||--o{ MOVIE_GENRE: "has"
+    MOVIE ||--o{ MOVIE_PERSON_CHARACTER : "involves"
+    COUNTRY ||--o{ MOVIE : "is origin of"
+    COUNTRY ||--o{ PERSON: "is origin of"
     GENRE ||--o{ MOVIE_GENRE: "belongs to"
     FILE ||--o{ PERSON_PHOTO : "has"
-    PERSON ||--o{ PERSON_PHOTO : "has"
     FILE ||--o| PERSON : "is main photo for"
-    MOVIE ||--o{ CHARACTER : "has"
-    MOVIE ||--o{ MOVIE_PERSON : "involves"
-    PERSON ||--o{ MOVIE_PERSON : "participates in"
-    CHARACTER |o--o{ MOVIE_PERSON : "played by"
+    PERSON ||--o{ PERSON_PHOTO : "has"
+    PERSON ||--o{ MOVIE: "directed"
+    PERSON |o--o{ MOVIE_PERSON_CHARACTER : "participates in"
+    CHARACTER |o--o{ MOVIE_PERSON_CHARACTER : "played by"
+    FAVORITE_MOVIE }o--|| MOVIE : "refers to"
