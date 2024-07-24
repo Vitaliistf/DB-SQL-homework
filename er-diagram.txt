@@ -1,12 +1,24 @@
 erDiagram
-    User {
+    USER {
         int id PK
         string username
         string first_name
         string last_name
         string email
         string password
-        string avatar_id FK
+        string avatar_file_id FK
         datetime created_at
         datetime updated_at
     }
+
+    FILE {
+        int id PK
+        string file_name
+        string mime_type
+        string key
+        string url
+        datetime created_at
+        datetime updated_at
+    }
+
+    USER ||--o| FILE: "has"
