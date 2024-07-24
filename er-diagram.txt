@@ -35,6 +35,28 @@ erDiagram
         datetime updated_at
     }
 
+    PERSON {
+        int id PK
+        string first_name
+        string last_name
+        text biography
+        date date_of_birth
+        %% ENUM('male', 'female', 'other')
+        enum gender 
+        int country_id FK
+        int main_photo_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    PERSON_PHOTO {
+        int id PK
+        int person_id FK
+        int file_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
     MOVIE {
         int id PK
         string title
@@ -61,3 +83,6 @@ erDiagram
     COUNTRY ||--o{ MOVIE : "is origin of"
     MOVIE ||--o{ MOVIE_GENRE: "has"
     GENRE ||--o{ MOVIE_GENRE: "belongs to"
+    FILE ||--o{ PERSON_PHOTO : "has"
+    PERSON ||--o{ PERSON_PHOTO : "has"
+    FILE ||--o| PERSON : "is main photo for"
