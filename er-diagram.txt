@@ -6,7 +6,7 @@ erDiagram
         string last_name
         string email
         string password
-        string avatar_file_id FK
+        int avatar_id FK
         datetime created_at
         datetime updated_at
     }
@@ -21,4 +21,43 @@ erDiagram
         datetime updated_at
     }
 
+    COUNTRY {
+        int id PK
+        string name
+        datetime created_at
+        datetime updated_at
+    }
+
+    GENRE {
+        int id PK
+        string name
+        datetime created_at
+        datetime updated_at
+    }
+
+    MOVIE {
+        int id PK
+        string title
+        text description
+        decimal budget
+        date release_date
+        int duration
+        int director_id FK
+        int country_id FK
+        int poster_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    MOVIE_GENRE {
+        int movie_id FK
+        int genre_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
     USER ||--o| FILE: "has"
+    MOVIE ||--o| FILE: "has" 
+    COUNTRY ||--o{ MOVIE : "is origin of"
+    MOVIE ||--o{ MOVIE_GENRE: "has"
+    GENRE ||--o{ MOVIE_GENRE: "belongs to"
