@@ -6,8 +6,8 @@
 
 SELECT 
 	p.id as "ID", 
-	first_name as "First name", 
-	last_name as "Last name", 
+	p.first_name as "First name", 
+	p.last_name as "Last name", 
 	SUM(m.budget) as "Total movies budget"
 FROM 
 	person p
