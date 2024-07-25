@@ -17,7 +17,8 @@ LEFT JOIN
 	movie m ON mpc.movie_id = m.id
 GROUP BY 
 	p.id, p.first_name, p.last_name
-HAVING					-- Not including non-actors(directors)
+-- ↓ Not including non-actors(directors)
+HAVING
   SUM(m.budget) > 0
 ORDER BY 
 	SUM(m.budget) DESC;
