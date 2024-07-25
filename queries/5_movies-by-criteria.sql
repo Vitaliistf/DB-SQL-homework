@@ -23,17 +23,17 @@ SELECT
 	m.duration AS "Duration",
 	m.description AS "Description",
 	json_build_object(
-        'id', f.id,
-        'file_name', f.file_name, 
-        'mime_type', f.mime_type,
-        'key', f.key,
-        'url', f.url 
-    ) AS "Poster",
-    json_build_object(
-        'id', p.id, 
-        'first_name', p.first_name,
-        'last_name', p.last_name
-    ) AS "Director"
+		'id', f.id,
+		'file_name', f.file_name, 
+		'mime_type', f.mime_type,
+		'key', f.key,
+		'url', f.url 
+	) AS "Poster",
+	json_build_object(
+		'id', p.id, 
+		'first_name', p.first_name,
+		'last_name', p.last_name
+	) AS "Director"
 FROM
 	movie m
 LEFT JOIN
@@ -45,10 +45,10 @@ WHERE
 	m.release_date > MAKE_DATE(2022, 1, 1) AND
 	m.duration > 135 AND
 	EXISTS (
-        SELECT 1
-        FROM movie_genre mg
-        INNER JOIN genre g ON mg.genre_id = g.id
-        WHERE mg.movie_id = m.id
-        AND g.name IN ('Action', 'Drama')
-    )
+		SELECT 1
+		FROM movie_genre mg
+		INNER JOIN genre g ON mg.genre_id = g.id
+		WHERE mg.movie_id = m.id
+		AND g.name IN ('Action', 'Drama')
+	)
 	

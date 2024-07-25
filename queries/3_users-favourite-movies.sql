@@ -10,7 +10,7 @@ SELECT
 FROM 
 	user_account u
 -- ↓ INNER JOIN here to exclude users that do not have favorite movies
-LEFT JOIN 			
+LEFT JOIN 
 	favorite_movie fm on fm.user_account_id = u.id
 GROUP BY
 	u.id, u.username
