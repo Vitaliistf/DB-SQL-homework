@@ -62,8 +62,8 @@ CREATE TABLE person (
 -- Table for people-photos relations
 CREATE TABLE person_photo (
     id SERIAL PRIMARY KEY,
-    person_id INTEGER,
-    file_id INTEGER,
+    person_id INTEGER NOT NULL,
+    file_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -101,4 +101,30 @@ CREATE TABLE movie_genre (
     PRIMARY KEY (movie_id, genre_id),
     FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE,
     FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE
+);
+
+CREATE TYPE character_role AS ENUM ('leading', 'supporting', 'background');
+
+-- Table for characters
+CREATE TABLE character (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    role character_role NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for movies-people-characters relations
+CREATE TABLE movie_person_character (
+    id SERIAL PRIMARY KEY,
+    movie_id INTEGER NOT NULL,
+    person_id INTEGER,
+    character_id INTEGER,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE,
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
+    FOREIGN KEY (character_id) REFERENCES character(id) ON DELETE CASCADE
 );
