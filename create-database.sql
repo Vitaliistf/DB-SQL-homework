@@ -58,3 +58,16 @@ CREATE TABLE person (
     FOREIGN KEY (country_id) REFERENCES country(id) ON DELETE SET NULL,
     FOREIGN KEY (main_photo_id) REFERENCES file(id) ON DELETE SET NULL
 );
+
+-- Table for people-photos relations
+CREATE TABLE person_photo (
+    id SERIAL PRIMARY KEY,
+    person_id INTEGER,
+    file_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
+    FOREIGN KEY (file_id) REFERENCES file(id) ON DELETE CASCADE,
+    UNIQUE(person_id, file_id)
+);
