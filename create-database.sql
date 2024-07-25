@@ -29,7 +29,9 @@ CREATE TABLE user (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (avatar_id) REFERENCES file(id) ON DELETE SET NULL
+    FOREIGN KEY (avatar_id) REFERENCES file(id) ON DELETE SET NULL,
+
+    CONSTRAINT check_email_format CHECK (email ~* '^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$')
 );
 
 -- Table for genres
@@ -88,7 +90,10 @@ CREATE TABLE movie (
 
     FOREIGN KEY (director_id) REFERENCES person(id) ON DELETE SET NULL,
     FOREIGN KEY (country_id) REFERENCES country(id) ON DELETE SET NULL,
-    FOREIGN KEY (poster_id) REFERENCES file(id) ON DELETE SET NULL
+    FOREIGN KEY (poster_id) REFERENCES file(id) ON DELETE SET NULL,
+
+    CONSTRAINT check_duration_positive CHECK (duration > 0),
+    CONSTRAINT check_budget_positive CHECK (budget >= 0)
 );
 
 -- Table for movies-genres relations
@@ -126,7 +131,14 @@ CREATE TABLE movie_person_character (
 
     FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE,
     FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
-    FOREIGN KEY (character_id) REFERENCES character(id) ON DELETE CASCADE
+    FOREIGN KEY (character_id) REFERENCES character(id) ON DELETE CASCADE,
+
+    CONSTRAINT check_person_or_character CHECK (
+        (person_id IS NOT NULL AND character_id IS NULL) OR 
+        (person_id IS NULL AND character_id IS NOT NULL) OR 
+        (person_id IS NOT NULL AND character_id IS NOT NULL)
+    ),
+    UNIQUE(movie_id, person_id, character_id)
 );
 
 -- Table for favorite movies
