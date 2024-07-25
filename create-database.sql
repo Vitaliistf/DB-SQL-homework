@@ -20,7 +20,7 @@ CREATE TABLE country (
 );
 
 -- Table for users
-CREATE TABLE user (
+CREATE TABLE user_account (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     first_name VARCHAR(50) NOT NULL,
@@ -145,13 +145,13 @@ CREATE TABLE movie_person_character (
 
 -- Table for favorite movies
 CREATE TABLE favorite_movie (
-    user_id INTEGER,
+    user_account_id INTEGER,
     movie_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    PRIMARY KEY (user_id, movie_id),
-    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_account_id, movie_id),
+    FOREIGN KEY (user_account_id) REFERENCES user_account(id) ON DELETE CASCADE,
     FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE
 );
 
@@ -167,7 +167,7 @@ END;
 $$ language 'plpgsql';
 
 -- updated_at updating triggers
-CREATE TRIGGER update_user_modtime BEFORE UPDATE ON user FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_user_account_modtime BEFORE UPDATE ON user_account FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 CREATE TRIGGER update_file_modtime BEFORE UPDATE ON file FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 CREATE TRIGGER update_country_modtime BEFORE UPDATE ON country FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 CREATE TRIGGER update_genre_modtime BEFORE UPDATE ON genre FOR EACH ROW EXECUTE FUNCTION update_modified_column();
@@ -188,8 +188,8 @@ CREATE INDEX idx_file_key ON file(key);
 CREATE INDEX idx_country_name ON country(name);
 
 -- Indexes for user table
-CREATE INDEX idx_user_username ON user(username);
-CREATE INDEX idx_user_email ON user(email);
+CREATE INDEX idx_user_account_username ON user_account(username);
+CREATE INDEX idx_user_account_email ON user_account(email);
 
 -- Index for genre table
 CREATE INDEX idx_genre_name ON genre(name);
@@ -222,5 +222,5 @@ CREATE INDEX idx_mpc_person_id ON movie_person_character(person_id);
 CREATE INDEX idx_mpc_character_id ON movie_person_character(character_id);
 
 -- Indexes for favorite_movie table
-CREATE INDEX idx_favorite_movie_user_id ON favorite_movie(user_id);
+CREATE INDEX idx_favorite_movie_user_account_id ON favorite_movie(user_account_id);
 CREATE INDEX idx_favorite_movie_movie_id ON favorite_movie(movie_id);
