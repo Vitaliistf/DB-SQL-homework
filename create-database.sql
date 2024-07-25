@@ -129,7 +129,7 @@ CREATE TABLE movie_person_character (
     FOREIGN KEY (character_id) REFERENCES character(id) ON DELETE CASCADE
 );
 
--- Table for favorite_movies
+-- Table for favorite movies
 CREATE TABLE favorite_movie (
     user_id INTEGER,
     movie_id INTEGER,
@@ -141,3 +141,24 @@ CREATE TABLE favorite_movie (
     FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE
 );
    
+-- updated_at updating function
+CREATE OR REPLACE FUNCTION update_modified_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- updated_at updating triggers
+CREATE TRIGGER update_user_modtime BEFORE UPDATE ON user FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_file_modtime BEFORE UPDATE ON file FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_country_modtime BEFORE UPDATE ON country FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_genre_modtime BEFORE UPDATE ON genre FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_person_modtime BEFORE UPDATE ON person FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_person_photo_modtime BEFORE UPDATE ON person_photo FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_movie_modtime BEFORE UPDATE ON movie FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_movie_genre_modtime BEFORE UPDATE ON movie_genre FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_character_modtime BEFORE UPDATE ON character FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_movie_person_character_modtime BEFORE UPDATE ON movie_person_character FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+CREATE TRIGGER update_favorite_movie_modtime BEFORE UPDATE ON favorite_movie FOR EACH ROW EXECUTE FUNCTION update_modified_column();
