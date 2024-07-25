@@ -1,3 +1,5 @@
+-------------------------TABLES CREATION-------------------------
+
 -- Table for files
 CREATE TABLE file (
     id SERIAL PRIMARY KEY,
@@ -152,6 +154,8 @@ CREATE TABLE favorite_movie (
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE
 );
+
+-------------------------TRIGGERS CREATION-------------------------
    
 -- updated_at updating function
 CREATE OR REPLACE FUNCTION update_modified_column()
@@ -174,3 +178,49 @@ CREATE TRIGGER update_movie_genre_modtime BEFORE UPDATE ON movie_genre FOR EACH 
 CREATE TRIGGER update_character_modtime BEFORE UPDATE ON character FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 CREATE TRIGGER update_movie_person_character_modtime BEFORE UPDATE ON movie_person_character FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 CREATE TRIGGER update_favorite_movie_modtime BEFORE UPDATE ON favorite_movie FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+
+-------------------------INDEXES CREATION-------------------------
+--39
+-- Index for file table
+CREATE INDEX idx_file_key ON file(key);
+
+-- Index for country table
+CREATE INDEX idx_country_name ON country(name);
+
+-- Indexes for user table
+CREATE INDEX idx_user_username ON user(username);
+CREATE INDEX idx_user_email ON user(email);
+
+-- Index for genre table
+CREATE INDEX idx_genre_name ON genre(name);
+
+-- Indexes for person table
+CREATE INDEX idx_person_name ON person(first_name, last_name);
+CREATE INDEX idx_person_country_id ON person(country_id);
+CREATE INDEX idx_person_main_photo_id ON person(main_photo_id);
+
+-- Indexes for person_photo table
+CREATE INDEX idx_person_photo_person_id ON person_photo(person_id);
+CREATE INDEX idx_person_photo_file_id ON person_photo(file_id);
+
+-- Indexes for movie table
+CREATE INDEX idx_movie_title ON movie(title);
+CREATE INDEX idx_movie_director_id ON movie(director_id);
+CREATE INDEX idx_movie_country_id ON movie(country_id);
+CREATE INDEX idx_movie_poster_id ON movie(poster_id);
+
+-- Indexes for movie_genre table
+CREATE INDEX idx_movie_genre_movie_id ON movie_genre(movie_id);
+CREATE INDEX idx_movie_genre_genre_id ON movie_genre(genre_id);
+
+-- Index for character table
+CREATE INDEX idx_character_name ON character(name);
+
+-- Indexes for movie_person_character table
+CREATE INDEX idx_mpc_movie_id ON movie_person_character(movie_id);
+CREATE INDEX idx_mpc_person_id ON movie_person_character(person_id);
+CREATE INDEX idx_mpc_character_id ON movie_person_character(character_id);
+
+-- Indexes for favorite_movie table
+CREATE INDEX idx_favorite_movie_user_id ON favorite_movie(user_id);
+CREATE INDEX idx_favorite_movie_movie_id ON favorite_movie(movie_id);
