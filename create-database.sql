@@ -31,3 +31,11 @@ CREATE TABLE user (
 
     FOREIGN KEY (avatar_id) REFERENCES file(id) ON DELETE SET NULL
 );
+
+-- Table for genres
+CREATE TABLE genre (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
