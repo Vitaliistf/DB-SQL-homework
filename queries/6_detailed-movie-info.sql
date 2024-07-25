@@ -58,7 +58,7 @@ SELECT
 		WHERE p.id = m.director_id
 	) AS "Director",
 	(
-		SELECT array_agg(
+		SELECT array_agg( -- or json_agg if standard array needed
 			json_build_object(
 				'id', a.id,
 				'first_name', a.first_name, 
@@ -81,7 +81,7 @@ SELECT
 		WHERE mpc.movie_id = m.id
 	) AS "Actors",
 	(
-		SELECT json_agg(
+		SELECT json_agg( -- or array_agg if standard array needed
  			json_build_object(
 				'id', g.id, 
 				'name', g.name
