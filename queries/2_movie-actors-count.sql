@@ -4,9 +4,9 @@
 -- Actors count
 
 SELECT 
-	m.id as "ID",
-	m.title as "Title",
-	COUNT(mpc.person_id) as "Actors count"
+	m.id AS "ID",
+	m.title AS "Title",
+	COUNT(mpc.person_id) AS "Actors count"
 FROM 
 	movie m
 LEFT JOIN

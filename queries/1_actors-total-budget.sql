@@ -5,10 +5,10 @@
 -- Total movies budget
 
 SELECT 
-	p.id as "ID", 
-	p.first_name as "First name", 
-	p.last_name as "Last name", 
-	SUM(m.budget) as "Total movies budget"
+	p.id AS "ID", 
+	p.first_name AS "First name", 
+	p.last_name AS "Last name", 
+	SUM(m.budget) AS "Total movies budget"
 FROM 
 	person p
 LEFT JOIN 
@@ -18,6 +18,6 @@ LEFT JOIN
 GROUP BY 
 	p.id, p.first_name, p.last_name
 HAVING					-- Not including non-actors(directors)
-    SUM(m.budget) > 0
+  SUM(m.budget) > 0
 ORDER BY 
-	"Total movies budget" DESC;
+	SUM(m.budget) DESC;
