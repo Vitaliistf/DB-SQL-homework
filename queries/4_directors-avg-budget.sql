@@ -9,7 +9,7 @@ SELECT
 	AVG(m.budget) AS "Average budget"
 FROM
 	person p
--- ↓ Include only people who directed movies. To include everyone use LEFT JOIN and COALESCE(AVG(m.budget), 0)
+-- ↓ Includes only people who directed movies. To include everyone use LEFT JOIN and COALESCE(AVG(m.budget), 0)
 RIGHT JOIN
 	movie m ON m.director_id = p.id
 GROUP BY

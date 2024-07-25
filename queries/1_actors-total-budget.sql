@@ -11,14 +11,12 @@ SELECT
 	SUM(m.budget) AS "Total movies budget"
 FROM 
 	person p
-LEFT JOIN 
+-- ↓ INNER JOIN to exclude non-actors(directors), LEFT JOIN to include them
+INNER JOIN 
 	movie_person_character mpc ON p.id = mpc.person_id
-LEFT JOIN 
+INNER JOIN 
 	movie m ON mpc.movie_id = m.id
 GROUP BY 
 	p.id, p.first_name, p.last_name
--- ↓ Not including non-actors(directors)
-HAVING
-  SUM(m.budget) > 0
 ORDER BY 
 	SUM(m.budget) DESC;
