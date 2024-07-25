@@ -178,7 +178,7 @@ erDiagram
    psql -U your_username -d your_database -f definition/populate-database.sql
    ```
 
-3. **Run Queries**: Use the `queries/1_actors-total-budget.sql` file to run predefined queries against the database.
+3. **Run Queries**: Use the SQL files in the `queries` directory to run predefined queries against the database. For example:
    ```sh
    psql -U your_username -d your_database -f queries/1_actors-total-budget.sql
    ```
