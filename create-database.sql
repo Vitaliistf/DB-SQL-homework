@@ -71,3 +71,34 @@ CREATE TABLE person_photo (
     FOREIGN KEY (file_id) REFERENCES file(id) ON DELETE CASCADE,
     UNIQUE(person_id, file_id)
 );
+
+-- Table for movies
+CREATE TABLE movie (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    budget DECIMAL(15, 2),
+    release_date DATE,
+    duration INTEGER,
+    director_id INTEGER,
+    country_id INTEGER,
+    poster_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (director_id) REFERENCES person(id) ON DELETE SET NULL,
+    FOREIGN KEY (country_id) REFERENCES country(id) ON DELETE SET NULL,
+    FOREIGN KEY (poster_id) REFERENCES file(id) ON DELETE SET NULL
+);
+
+-- Table for movies-genres relations
+CREATE TABLE movie_genre (
+    movie_id INTEGER,
+    genre_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (movie_id, genre_id),
+    FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE,
+    FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE
+);
